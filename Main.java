@@ -7,6 +7,7 @@ class Student {
     String pass = "unknown";
     String honor;
     String avg;
+    String honorRoll;
 
     public Student(String id, String name){
         this.id = id;
@@ -14,9 +15,9 @@ class Student {
         gradez = new ArrayList<>();
     }
 
-    public void addG(Double g) {
-        if (g != null && g >= 0 && g <= 100) {
-            gradez.add(g);
+    public void addG(Double grade) {
+        if (grade != null && grade >= 0 && grade <= 100) {
+            gradez.add(grade);
         } else {
             throw new IllegalArgumentException("Grade must be between 0 and 100.");
         }
@@ -25,8 +26,8 @@ class Student {
 
     public double average() {
         double total = 0;
-        for (Double g : gradez) {
-            total += g;
+        for (Double grade : gradez) {
+            total += grade;
         }
         if (gradez.isEmpty()) {
             return 0; // Avoid division by zero
@@ -66,16 +67,39 @@ class Student {
         }
     }
 
-    public void removeGrade(int i){
-        gradez.remove(i);
+    public String isOnHonorRoll() {
+        this.honorRoll = average() >= 90 ? "Yes" : "No";
+        return this.honorRoll;
+    }
+
+    public boolean removeGrade(int i) {
+        if (i >= 0 && i < gradez.size()) {
+            gradez.remove(i);
+            return true;
+        } else {
+            System.out.println("Invalid index: " + i);
+            return false;
+        }
+    }
+    
+    
+    public boolean removeGradeByValue(double value) {
+        boolean removed = gradez.remove(value);
+        if (!removed) {
+            System.out.println("Grade value not found: " + value);
+        }
+        return removed;
     }
     
     public void reportCard(){
-        System.out.println("Student: " + name);
-        System.out.println("ID: " + id);
-        System.out.println("Grades #: " + gradez.size());
-        System.out.println("Average: " + avg);
-        // System.out.println("Honor Roll: " + honorRoll);
+
+        System.out.println("===== Student Summary Report =====");
+        System.out.println("Student: " + this.name);
+        System.out.println("ID: " + this.id);
+        System.out.println("Grades #: " + this.gradez.size());
+        System.out.println("Average: " + average());
+        System.out.println("Letter Grade  : " + this.avg);
+        System.out.println("Honor Roll: " + honorRoll);
     }
 }
 public class Main {
